@@ -1,42 +1,13 @@
-html.has-scroll,
-body.project-page-body {
-    overflow: visible !important;
-}
+/* --- ФИНАЛЬНАЯ ВЕРСИЯ FLAVI.CSS --- */
 
 html {
     scrollbar-width: none;
 }
-
 html::-webkit-scrollbar {
     display: none;
 }
 
-.custom-scrollbar-track {
-    position: fixed;
-    top: 50px;
-    bottom: 50px;
-    right: 10px;
-    width: 15px;
-    z-index: 999;
-}
-
-.custom-scrollbar-thumb {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 9px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 5px;
-    cursor: grab;
-}
-
-body.is-dragging,
-body.is-dragging .custom-scrollbar-thumb {
-    cursor: grabbing;
-    user-select: none;
-}
-
-/* --- Стили для горизонтального слайдера --- */
+/* --- Стили для горизонтального слайдера (внутри первого слайда) --- */
 .horizontal-slider {
     position: relative;
     width: 100%;
@@ -44,95 +15,52 @@ body.is-dragging .custom-scrollbar-thumb {
     overflow: hidden;
     background-color: #000;
 }
-
 .slides-container-h {
     display: flex;
     width: 100%;
     height: 100%;
     transition: transform 0.8s ease-in-out;
 }
-
 .slide-h {
     width: 100%;
     height: 100%;
     flex-shrink: 0;
     position: relative;
 }
-
 .slide-h video {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
-/* --- СТИЛИ ДЛЯ СЛАЙДЕРА (ОБНОВЛЕННЫЕ СТРЕЛКИ) --- */
-
 .slider-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
-    
     background-color: transparent;
     border: none;
     width: 50px;
     height: 50px;
     cursor: pointer;
-    
     font-size: 0; 
-    
     transition: transform 0.3s ease;
 }
-
-.slider-arrow:hover {
-    transform: translateY(-50%) scale(1.1);
-}
-
-.slider-arrow::before,
-.slider-arrow::after {
+.slider-arrow:hover { transform: translateY(-50%) scale(1.1); }
+.slider-arrow::before, .slider-arrow::after {
     content: '';
     position: absolute;
     top: 50%;
-    
     width: 35px;
     height: 2px;
     background-color: rgb(255, 255, 255);
     border-radius: 2px;
 }
-
-/* Позиционирование и поворот линий для ЛЕВОЙ стрелки (<) */
-.slider-arrow.left::before {
-    left: 12px;
-    transform-origin: left;
-    transform: rotate(55deg); /* ИЗМЕНЕНИЕ: было 25deg */
-}
-.slider-arrow.left::after {
-    left: 12px;
-    transform-origin: left;
-    transform: rotate(-55deg); /* ИЗМЕНЕНИЕ: было -25deg */
-}
-
-/* Позиционирование и поворот линий для ПРАВОЙ стрелки (>) */
-.slider-arrow.right::before {
-    right: 12px;
-    transform-origin: right;
-    transform: rotate(-55deg); /* ИЗМЕНЕНИЕ: было -25deg */
-}
-.slider-arrow.right::after {
-    right: 12px;
-    transform-origin: right;
-    transform: rotate(55deg); /* ИЗМЕНЕНИЕ: было 25deg */
-}
-
-/* ... стили для .slider-arrow.right::after ... */
-
-/* ИЗМЕНЕНИЕ: Добавляем позиционирование для самих кнопок */
-.slider-arrow.left {
-    left: 150px; 
-}
-.slider-arrow.right {
-    right: 150px; 
-}
+.slider-arrow.left::before { left: 12px; transform-origin: left; transform: rotate(55deg); }
+.slider-arrow.left::after { left: 12px; transform-origin: left; transform: rotate(-55deg); }
+.slider-arrow.right::before { right: 12px; transform-origin: right; transform: rotate(-55deg); }
+.slider-arrow.right::after { right: 12px; transform-origin: right; transform: rotate(55deg); }
+.slider-arrow.left { left: 150px; }
+.slider-arrow.right { right: 150px; }
 .slider-nav-h {
     position: absolute;
     bottom: 30px;
@@ -142,7 +70,6 @@ body.is-dragging .custom-scrollbar-thumb {
     display: flex;
     gap: 15px;
 }
-
 .dot-h {
     width: 12px;
     height: 5px;
@@ -152,335 +79,103 @@ body.is-dragging .custom-scrollbar-thumb {
     transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     box-shadow: 0 0 0 1px rgb(255, 255, 255);
 }
+.dot-h:hover { background-color: rgba(255, 255, 255, 0.8); }
+.dot-h.active { width: 35px; background-color: #ffffff; }
 
-.dot-h:hover {
-    background-color: rgba(255, 255, 255, 0.8);
-}
-
-.dot-h.active {
-    width: 35px;
-    background-color: #ffffff;
-}
-
-/* --- Контейнеры для контента (концепция 16:9) --- */
-.content-wrapper {
-    position: relative; /* Нужно, чтобы контент скроллился поверх слайдера */
-    z-index: 5;
-    background-color: var(--background-color);
-}
-
-.project-content {
-    /* Это наш "ограничитель" для широких экранов */
-    max-width: 1600px; /* Максимальная ширина контентной части */
-    margin: 0 auto;    /* Центрируем его */
-    padding: 100px 50px; /* Внутренние отступы сверху/снизу и по бокам */
-}
-
-/* --- Стили для инфоблоков и плейсхолдеров --- */
-.info-blocks-container {
-    /* Занимает 60% от родителя (.project-content) и центрируется */
-    width: 75%;
-    margin: 0 auto;
-}
-
-.info-blocks-container > :nth-child(3),
-.info-blocks-container > :nth-child(7),
-.info-blocks-container > :nth-child(11) {
-    flex-direction: row-reverse;
-}
-
-.info-block {
-    display: flex;
-    align-items: center;
-    gap: 50px; /* Расстояние между картинкой и текстом */
-}
-
-.info-image {
-    flex: 2; /* Занимает 2 части из 5 */
-}
-
-.info-text {
-    flex: 3; /* Занимает 3 части из 5 */
-}
-
-.info-image img {
-    width: 100%;
-    display: block; /* Убирает лишний отступ под картинкой */
-}
-
-/* Стили для текста (можно будет дополнить) */
-.info-text h3 {
-    font-size: 1.8rem;
-    font-weight: 800;
-    margin-bottom: 15px;
-}
-
-.info-text p {
-    font-size: 1.2rem;
-    line-height: 1.7;
-    color: #b0b0b0;
-    font-weight: 500;
-}
-
-/* Плейсхолдер для создания вертикального отступа между блоками */
-.height-placeholder {
-    height: 150px; /* Высота отступа */
-}
-
-/* Контейнер должен быть контекстом позиционирования для клонов */
-.info-blocks-container {
-    position: relative;
-}
-
-/* 
-Этот класс будет добавляться к .info-block, чтобы скрыть ОРИГИНАЛЫ.
-'visibility: hidden' идеально подходит, так как элемент становится невидимым,
-но продолжает занимать свое место в макете, не вызывая "прыжков".
-*/
-.is-hiding-children > .info-image,
-.is-hiding-children > .info-text {
-    visibility: hidden;
-}
-
-/* 
-Базовый стиль для КЛОНОВ, которые мы создадим в JS.
-'position: absolute' вырывает их из потока документа, позволяя 
-свободно анимировать их положение внутри .info-blocks-container.
-*/
-.clone {
-    position: absolute;
-    z-index: 10; /* Клоны должны быть поверх остального контента */
-    top: 0;      /* Начальные координаты, GSAP их переопределит */
-    left: 0;
-}
-
-/* Стили для клона картинки и ее содержимого */
-.image-clone {
-    overflow: hidden;
-    border-radius: 12px; /* Сохраняем скругление углов, если оно есть */
-}
-.image-clone img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* --- СТИЛИ ДЛЯ ЗАГРУЗОЧНОЙ ЗАГЛУШКИ (ФИНАЛЬНЫЙ ДИЗАЙН) --- */
-
-.preloader {
+/* --- Стили для дискретного слайдера (2 слайда) --- */
+body.project-page-body { overflow: hidden !important; }
+.project-page-slider {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 9999;
-    /* ИЗМЕНЕНИЕ: Убираем flex-свойства отсюда */
-    background-color: var(--background-color); 
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-    transition-delay: 0.2s;
+    transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+}
+.project-slide {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
 }
 
-/* ИЗМЕНЕНИЕ: Новый класс для центрирования контента */
-.preloader-wrapper {
+/* --- Стили для контента на втором слайде --- */
+.content-wrapper {
     width: 100%;
     height: 100%;
+    overflow: hidden;
+    background-color: var(--background-color);
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-/* Контейнер для всего контента внутри заглушки */
-.preloader-content {
-    display: flex;
-    flex-direction: column;
-    /* ИЗМЕНЕНИЕ: Отступ уменьшен в 1.5 раза (было 20px) */
-    gap: 13px; 
-    color: #dcdcdc;
-    font-weight: 500;
-    align-items: flex-start;
-}
-
-/* Строка с логотипом */
-.preloader-logo-row img {
-    width: 250px; 
-}
-
-/* Разделитель */
-.preloader-separator {
+.project-content {
+    max-width: 1600px;
     width: 100%;
-    height: 3px;
-    background-color: #dcdcdc54;
-    border-radius: 2px;
+    height: 100%; 
+    margin: 0 auto;
+    padding: 120px 50px;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
 }
-
-/* Слоган в три строки */
-.preloader-tagline {
-    text-align: left;
-    font-size: 14px;
-    line-height: 1.5;
-    letter-spacing: 1px;
-    padding-left: 91px;
+.project-description {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
 }
-.preloader-tagline span {
-    display: block;
-}
-
-.progress-bar-container {
-    position: absolute;
-    top: 0; /* ИЗМЕНЕНИЕ: Теперь находится наверху */
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #DADEDF; /* Цвет "пустой" полосы */
-}
-
-.progress-bar-fill {
-    width: 0; /* Начальная ширина - 0 */
-    height: 100%;
-    background-color: #423930; /* Цвет "заполненной" полосы */
-}
-
-/* Логика видимости (остается без изменений) */
-body.is-loading .preloader {
-    opacity: 1;
-    visibility: visible;
-}
-body:not(.is-loading) .preloader {
-    opacity: 0;
-    visibility: hidden;
-}
-body.is-loading > main {
-    opacity: 0;
-}
-/* --- Стили для иконок соцсетей (прикрепленные к окну) --- */
-
-.social-links {
-    /* Позиционирует блок относительно окна браузера */
-    position: fixed; 
-    
-    /* Привязка к нижнему краю */
-    bottom: 30px; 
-
-    /* * ИЗМЕНЕНИЕ: Устанавливаем отступ слева в 5%, 
-     * чтобы он точно соответствовал отступу логотипа из main.css
-     */
-    left: 11%;  
-
-    /* Увеличим z-index, чтобы иконки были поверх всех элементов */
-    z-index: 1000; 
-    
-    /* Эти стили остаются без изменений */
-    display: flex;
-    gap: 30px;
-}
-
-.social-links a {
-    display: block;
-    transition: transform 0.3s ease;
-}
-
-.social-links a:hover {
-    transform: scale(1.1);
-}
-
-.social-links img {
-    width: 26px;
-    height: auto;
-    display: block;
-}
-
-/* --- Стили для вступительного текстового блока --- */
-.project-intro-text {
-    /* * Ограничиваем ширину для лучшей читаемости и центрируем.
-     * Ширина 75% и margin: auto соответствуют контейнеру ниже.
-    */
-    width: 75%;
-    max-width: 900px; /* Дополнительное ограничение, чтобы текст не был слишком растянут */
-    margin: 0 auto 120px auto; /* Отступы: 0 сверху, auto по бокам, 120px снизу */
-    text-align: center; /* Центрируем текст внутри блока */
-}
-
-.project-intro-text h2 {
-    /* Стили для заголовка, похожие на h3 в инфоблоках */
-    font-size: 3rem;
-    font-weight: 800;
+.project-description h2 {
+    font-size: 2.5rem;
     margin-bottom: 20px;
 }
-
-.project-intro-text p {
-    /* Стили для параграфа, похожие на p в инфоблоках */
-    font-size: 1.6rem;
+.project-description p {
+    font-size: 1.2rem;
     line-height: 1.8;
     color: #b0b0b0;
-    font-weight: 500;
+}
+.project-gallery-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.project-gallery-grid img {
+    height: 180px;
+    width: auto;
+    border-radius: 10px;
+    border: 1px solid #444;
 }
 
-.info-image, .image-clone {
-    border: 2px solid #5c5c5ce0;
-    border-radius: 12px;
-    overflow: hidden; /* Это свойство нужно, чтобы изображение обрезалось по скругленным углам */
-}
-
-/* --- АДАПТИВНОСТЬ для страниц проектов --- */
-
-@media (max-width: 900px) {
-    /* --- Слайдер --- */
+/* --- ЕДИНЫЙ БЛОК АДАПТИВНОСТИ --- */
+@media (max-width: 768px) {
+    /* Слайдер */
+    .slider-arrow { transform: translateY(-50%) scale(0.67); }
+    .slider-arrow:hover { transform: translateY(-50%) scale(0.75); }
     .slider-arrow.left { left: 15px; }
     .slider-arrow.right { right: 15px; }
+
+    /* Превращаем страницу проекта в свободно скроллящуюся */
+    body.project-page-body { overflow: auto !important; }
+    .project-page-slider {
+        position: static;
+        height: auto;
+        transform: none !important;
+    }
+    .project-slide { height: auto; }
+    .project-slide:first-child .horizontal-slider { height: 100vh; }
     
-    /* --- Контент --- */
+    /* Контент на втором слайде */
     .project-content {
-        padding: 80px 25px;
+        padding: 60px 25px;
+        justify-content: flex-start;
+        overflow-y: visible;
     }
-
-    .info-blocks-container {
-        width: 100%; /* Контент занимает всю ширину */
+    .project-description { margin-bottom: 40px; }
+    .project-description h2 { font-size: 2rem; }
+    .project-gallery-grid {
+        flex-direction: column;
+        gap: 20px;
     }
-
-    .info-block {
-        flex-direction: column !important; /* Картинка всегда сверху, !important чтобы перебить inline-стили */
-        gap: 25px;
-    }
-    
-    .height-placeholder {
-        height: 100px;
-    }
-    
-    .project-intro-text {
+    .project-gallery-grid img {
+        height: auto;
         width: 100%;
-        margin-bottom: 80px;
-    }
-    
-    .project-intro-text h2 {
-        font-size: 2.5rem;
-    }
-    .project-intro-text p {
-        font-size: 1.2rem;
-    }
-}
-
-@media (max-width: 768px) {
-.slider-arrow {
-    /* Уменьшаем размер стрелки и ее области нажатия в ~1.5 раза */
-    transform: translateY(-50%) scale(0.67); 
-}
-
-.slider-arrow:hover {
-    /* Делаем ховер-эффект относительным новому размеру */
-    transform: translateY(-50%) scale(0.75); 
-}
-
-.slider-arrow.left {
-    left: 15px; /* Устанавливаем новый, более близкий отступ от края */
-}
-.slider-arrow.right {
-    right: 15px; /* Устанавливаем новый, более близкий отступ от края */
-}
-    
-    .info-text h3 {
-        font-size: 1.5rem;
-    }
-    .info-text p {
-        font-size: 1.1rem;
     }
 }

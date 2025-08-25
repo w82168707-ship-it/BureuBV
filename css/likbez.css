@@ -6,7 +6,7 @@ html::-webkit-scrollbar { display: none; }
 
 /* Заголовок страницы */
 .likbez-header {
-    padding: 150px 50px 80px 50px;
+    padding: 50px 50px 80px 50px;
     text-align: center;
 }
 .likbez-header h1 {
@@ -23,23 +23,32 @@ html::-webkit-scrollbar { display: none; }
 
 /* Лента постов */
 .likbez-feed {
-    max-width: 900px; /* Оптимальная ширина для чтения */
+    max-width: 1400px; /* Делаем контейнер шире */
     margin: 0 auto;
     padding: 0 50px 100px 50px;
+    display: grid; /* Включаем грид-сетку */
+    grid-template-columns: 1fr 1fr; /* Две равные колонки */
+    gap: 40px; /* Расстояние между колонками и строками */
 }
-
-/* Стили для отдельного поста */
 .likbez-post {
-    display: block; /* <-- ЗАСТАВЛЯЕМ ССЫЛКУ ВЕСТИ СЕБЯ КАК БЛОК */
-    text-decoration: none; /* <-- Убираем стандартное подчёркивание */
-    color: inherit; /* <-- Наследуем цвет текста, чтобы он не был синим */
+    display: block;
+    text-decoration: none;
+    color: inherit;
     background-color: #2a2a2a;
     border: 1px solid #444;
     border-radius: 12px;
-    margin-bottom: 60px;
+    margin-bottom: 0; /* Убираем нижний отступ, теперь за него отвечает gap */
     overflow: hidden;
     position: relative;
     transition: transform 0.3s ease, border-color 0.3s ease;
+}
+.post-content {
+    padding: 25px; /* Уменьшаем внутренние отступы */
+}
+.post-title {
+    font-size: 1.7rem; /* Уменьшаем заголовок */
+    font-weight: 700;
+    margin: 0 0 15px 0;
 }
 
 .post-media img,
@@ -50,9 +59,6 @@ html::-webkit-scrollbar { display: none; }
     object-fit: cover; /* Масштабируем, чтобы заполнить блок, обрезая лишнее */
 }
 
-.post-content {
-    padding: 30px;
-}
 
 .post-meta {
     font-size: 0.9rem;
@@ -60,11 +66,6 @@ html::-webkit-scrollbar { display: none; }
     margin-bottom: 10px;
 }
 
-.post-title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin: 0 0 15px 0;
-}
 .post-title a {
     color: var(--main-text-color);
     text-decoration: none;
@@ -129,8 +130,8 @@ html::-webkit-scrollbar { display: none; }
     position: relative;
     width: 100%;
     background-color: #212121;
-    aspect-ratio: 3 / 2; /* <-- ВОЗВРАЩАЕМ ПРОПОРЦИИ */
-    max-height: 500px;   /* <-- ДОБАВЛЯЕМ МАКС. ВЫСОТУ */
+    aspect-ratio: 16 / 9 ; /* <-- ЗАМЕНЯЕМ НА НОВОЕ ЗНАЧЕНИЕ */
+    max-height: 500px;
     overflow: hidden;
 }
 
@@ -198,12 +199,14 @@ html::-webkit-scrollbar { display: none; }
     .likbez-header h1 { font-size: 2.8rem; }
     .likbez-header p { font-size: 1.1rem; }
 
-    .likbez-feed {
+       .likbez-feed {
+        grid-template-columns: 1fr; /* Возвращаем одну колонку на мобильных */
+        gap: 40px; /* Можно оставить или уменьшить */
         padding: 0 25px 80px 25px;
     }
 
-    .likbez-post {
-        margin-bottom: 40px;
+     .likbez-post {
+        margin-bottom: 0; /* Это правило уже должно быть, но убедимся */
     }
     
     .post-content { padding: 25px; }

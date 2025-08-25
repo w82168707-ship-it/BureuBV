@@ -5,7 +5,7 @@ html::-webkit-scrollbar { display: none; }
 
 /* Секция-обложка (Hero) */
 .services-hero {
-    height: 70vh; /* Сделаем чуть ниже, чем на других страницах */
+    height: 30vh; /* Сделаем чуть ниже, чем на других страницах */
     position: relative;
     display: flex;
     flex-direction: column;
@@ -25,20 +25,21 @@ html::-webkit-scrollbar { display: none; }
     color: #b0b0b0;
     max-width: 700px;
 }
-
-/* Обертка для основного контента */
 .page-content-wrapper {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 100px 50px;
+    padding: 10px 50px; /* Уменьшаем отступы */
 }
-
-/* Сетка с услугами */
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 30px;
-    margin-bottom: 120px;
+    margin-bottom: 100px; /* Уменьшаем отступ */
+}
+.approach-section {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 100px auto; /* Уменьшаем отступ */
 }
 
 .service-card {
@@ -63,12 +64,6 @@ html::-webkit-scrollbar { display: none; }
     margin-bottom: 0;
 }
 
-/* Секция "Наш подход" */
-.approach-section {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto 120px auto;
-}
 .approach-section h2 {
     font-size: 2.5rem;
     margin-bottom: 20px;

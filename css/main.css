@@ -337,92 +337,6 @@ body.menu-is-open .burger-menu .burger-line:nth-child(2) {
     background-color: rgba(97, 97, 97, 0.2);
 }
 
-.preloader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    /* ИЗМЕНЕНИЕ: Убираем flex-свойства отсюда */
-    background-color: var(--background-color); 
-    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-    transition-delay: 0.2s;
-}
-
-/* ИЗМЕНЕНИЕ: Новый класс для центрирования контента */
-.preloader-wrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Контейнер для всего контента внутри заглушки */
-.preloader-content {
-    display: flex;
-    flex-direction: column;
-    /* ИЗМЕНЕНИЕ: Отступ уменьшен в 1.5 раза (было 20px) */
-    gap: 13px; 
-    color: #dcdcdc;
-    font-weight: 500;
-    align-items: flex-start;
-}
-
-/* Строка с логотипом */
-.preloader-logo-row img {
-    width: 250px; 
-}
-
-/* Разделитель */
-.preloader-separator {
-    width: 100%;
-    height: 3px;
-    background-color: #dcdcdc54;
-    border-radius: 2px;
-}
-
-/* Слоган в три строки */
-.preloader-tagline {
-    text-align: left;
-    font-size: 14px;
-    line-height: 1.5;
-    letter-spacing: 1px;
-    padding-left: 91px;
-}
-.preloader-tagline span {
-    display: block;
-}
-
-.progress-bar-container {
-    position: absolute;
-    top: 0; /* ИЗМЕНЕНИЕ: Теперь находится наверху */
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #DADEDF; /* Цвет "пустой" полосы */
-}
-
-.progress-bar-fill {
-    width: 0; /* Начальная ширина - 0 */
-    height: 100%;
-    background-color: #423930; /* Цвет "заполненной" полосы */
-}
-
-/* Логика видимости (остается без изменений) */
-body.is-loading .preloader {
-    opacity: 1;
-    visibility: visible;
-}
-body:not(.is-loading) .preloader {
-    opacity: 0;
-    visibility: hidden;
-}
-body.is-loading > main {
-    opacity: 0;
-}
-
 /* --- Стили для контента на главной странице --- */
 /* --- Обновлённые стили для контента на главной странице --- */
 .hero-content {
@@ -596,4 +510,176 @@ html {
 
 html::-webkit-scrollbar {
     display: none; /* Для Chrome, Safari, Edge */
+}
+
+/* --- Стили для уведомления о копировании почты --- */
+#copy-notification {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translate(-50%, 20px); /* Начальное положение для анимации "выезда" */
+    
+    background-color: rgba(42, 42, 42, 0.9);
+    backdrop-filter: blur(10px);
+    color: #dcdcdc;
+    
+    padding: 15px 25px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.6;
+    
+    z-index: 9999; /* Поверх всех элементов */
+    
+    /* Скрываем по умолчанию */
+    opacity: 0;
+    visibility: hidden;
+    
+    /* Плавный переход для появления и исчезновения */
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+}
+
+#copy-notification p {
+    margin: 0;
+}
+
+/* Класс, который будет добавляться через JS для показа уведомления */
+#copy-notification.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0); /* Конечное положение */
+}
+
+/* --- НОВЫЕ СТИЛИ ДЛЯ КИНЕМАТОГРАФИЧНОГО ПРЕЛОАДЕРА --- */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: var(--background-color);
+    display: flex; /* Для центрирования обертки */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    transition-delay: 0.2s; /* Задержка перед исчезновением фона */
+}
+
+/* Обёртка 16:9 для контента на сверхшироких экранах */
+.preloader-content-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: calc(100vh * (16 / 9)); /* Ограничиваем ширину по высоте */
+    max-height: calc(100vw * (9 / 16)); /* Ограничиваем высоту по ширине */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Центральный блок (лого, слоган) */
+.preloader-central-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 13px;
+    color: #dcdcdc;
+    font-weight: 500;
+}
+.preloader-logo-row { transform: scale(0.8); opacity: 0; }
+.preloader-logo-row img { width: 250px; }
+.preloader-separator { width: 0%; height: 3px; background-color: #dcdcdc54; border-radius: 2px; }
+.preloader-tagline span { display: block; opacity: 0; }
+
+/* Контейнеры для текста услуг (ДЕСКТОП) */
+.preloader-services-top,
+.preloader-services-bottom {
+    position: absolute;
+    width: 90%;
+    left: 5%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 500;
+}
+.preloader-services-top {
+    bottom: 80px; /* Располагаем над нижним блоком */
+}
+.preloader-services-bottom {
+    bottom: 30px;
+}
+
+/* Начальное состояние для анимации текста */
+.preloader-services-top span,
+.preloader-services-bottom span {
+    opacity: 0;
+}
+
+/* Логика видимости */
+body.is-loading .preloader { opacity: 1; visibility: visible; }
+body:not(.is-loading) .preloader { opacity: 0; visibility: hidden; }
+body.is-loading > main,
+body.is-loading > header,
+body.is-loading > .slider-nav {
+    opacity: 0;
+}
+
+/* --- АДАПТАЦИЯ ПРЕЛОАДЕРА ДЛЯ МОБИЛЬНЫХ --- */
+@media (max-width: 768px) {
+    /* Сбрасываем ограничения обертки */
+    .preloader-content-wrapper {
+        max-width: none;
+        max-height: none;
+    }
+
+    /* Верхний блок текста */
+    .preloader-services-top {
+        top: 30px;
+        left: 25px;
+        bottom: auto; /* Сбрасываем позиционирование снизу */
+        width: auto;
+        flex-direction: column;
+        align-items: flex-start; /* Выравнивание по левому краю */
+        gap: 10px;
+        font-size: 14px;
+        padding: 0; /* Сбрасываем десктопные отступы */
+    }
+    .preloader-services-top span {
+        text-align: left;
+    }
+
+    /* Нижний блок текста */
+    .preloader-services-bottom {
+        bottom: 30px;
+        right: 25px;
+        left: auto; /* Сбрасываем позиционирование слева */
+        width: auto;
+        flex-direction: column;
+        align-items: flex-end; /* Выравнивание по правому краю */
+        gap: 10px;
+        font-size: 14px;
+    }
+     .preloader-services-bottom span {
+        text-align: right;
+    }
+}
+
+/* --- Корректировка положения текста "камень" на десктопе --- */
+@media (min-width: 769px) {
+    .preloader-services-bottom span:nth-child(2) {
+        position: relative;
+        left: 50px;
+    }
+}
+
+/* --- Корректировка отступа в меню для десктопной версии --- */
+@media (min-width: 769px) {
+    .menu-panel {
+        padding-top: 50px; /* Было 150px, уменьшаем на 50px */
+    }
 }

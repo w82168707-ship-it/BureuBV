@@ -195,58 +195,83 @@ document.body.style.overflow = 'hidden';
 
 // --- ОБНОВЛЁННЫЙ СКРИПТ ДЛЯ ПРЕЛОАДЕРА С ПРОГРЕСС-БАРОМ ---
 
-// Гарантирует, что страница всегда загружается с самого верха
-history.scrollRestoration = 'manual';
-window.scrollTo(0, 0);
-
+// --- НОВАЯ ЛОГИКА АНИМАЦИИ ПРЕЛОАДЕРА С РЕВЕРСОМ ---
 async function runPreloader() {
     const preloader = document.querySelector('.preloader');
     if (!preloader) {
         document.body.classList.remove('is-loading');
-        return; 
+        return;
     }
 
-    const progressBarFill = document.querySelector('.progress-bar-fill');
+    // Собираем все элементы для анимации
+    const logo = '.preloader-logo-row';
+    const separator = '.preloader-separator';
+    const taglineLines = '.preloader-tagline span';
+    // Теперь селектор снова выбирает из обоих контейнеров
+    const servicesText = '.preloader-services-top span, .preloader-services-bottom span';
+
+    // Создаем временную шкалу анимации, но пока не запускаем
+    const tl = gsap.timeline({ paused: true });
+
+    // 1. Анимация появления логотипа
+    tl.to(logo, { autoAlpha: 1, scale: 1, duration: 0.8, ease: 'power2.out' });
+    // 2. Анимация разделителя
+    tl.to(separator, { width: '100%', duration: 0.6, ease: 'power2.inOut' }, "-=0.3");
+    // 3. Появление строк слогана
+    tl.to(taglineLines, { autoAlpha: 1, stagger: 0.1, duration: 0.4 }, "-=0.2");
+    // 4. Появление текста услуг
+    tl.fromTo(servicesText, { autoAlpha: 0, y: 15 }, { autoAlpha: 1, y: 0, stagger: 0.08, duration: 0.5 }, "-=0.5");
+
+    // --- НОВАЯ ЛОГИКА ВОСПРОИЗВЕДЕНИЯ И РЕВЕРСА ---
+
+    // 1. Запускаем анимацию "вперёд" и ждём её завершения
+    await tl.play();
+
+    // 2. Ждём 0.5 секунды, пока всё видно
+    await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Задача 1: Минимальное время отображения, чтобы избежать "мигания"
-    const minimumDisplayTimeTask = new Promise(resolve => setTimeout(resolve, 1200));
+    // 3. Запускаем анимацию "назад" и ждём её завершения
+    await tl.reverse();
 
-    // Задача 2: Анимация прогресс-бара
-    const progressBarAnimationTask = new Promise(resolve => {
-        // Если на странице нет элемента прогресс-бара, просто завершаем задачу
-        if (!progressBarFill) {
-            resolve();
-            return;
-        }
-        // Если есть - анимируем его
-        gsap.to(progressBarFill, {
-            width: '100%',
-            duration: 0.8,
-            ease: 'power1.inOut',
-            onComplete: () => resolve() // Сообщаем, что анимация завершена
-        });
-    });
-
-    // Ждём, пока завершатся ОБЕ задачи: и таймер, и анимация
-    await Promise.all([minimumDisplayTimeTask, progressBarAnimationTask]);
-
-    // Плавно скрываем прелоадер
-    await gsap.to(preloader, { autoAlpha: 0, duration: 0.5 });
-    
-    // Убираем класс, чтобы показать основной контент
+    // 4. Теперь, когда контент скрылся, плавно убираем фон прелоадера
     document.body.classList.remove('is-loading');
-    initHeroAnimation(); 
+    
+    // 5. Запускаем анимацию появления контента на главной странице
+    initHeroAnimation();
 }
 
-// Запускаем всё после полной загрузки страницы
-window.addEventListener('load', () => {
-    runPreloader();
-});
+// --- Логика копирования Email и показа уведомления ---
+function initEmailCopy() {
+    const copyBtn = document.getElementById('email-copy-btn');
+    const notification = document.getElementById('copy-notification');
+    // Если на странице нет этих элементов, выходим
+    if (!copyBtn || !notification) return;
 
+    const emailToCopy = 'a.basov@bureaubv.ru';
+
+    copyBtn.addEventListener('click', (event) => {
+        event.preventDefault(); // Отменяем стандартное действие ссылки
+
+        navigator.clipboard.writeText(emailToCopy).then(() => {
+            // Показываем уведомление
+            notification.classList.add('show');
+
+            // Прячем уведомление через 4 секунды
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }).catch(err => {
+            console.error('Ошибка: не удалось скопировать почту: ', err);
+            // Можно добавить альтернативное уведомление об ошибке
+        });
+    });
+}
 
     // --- ЗАПУСК ВСЕХ ФУНКЦИЙ ---
     initOverlayMenu();
     initSubmenu();
+    runPreloader(); 
     initVerticalSlider();
     initHeroAnimation();
+    initEmailCopy();
 });

@@ -9,47 +9,67 @@
 </head>
 <body class="is-loading">
 
-    <div class="preloader">
-        <div class="preloader-wrapper">
-            <div class="preloader-content">
-                <div class="preloader-logo-row">
-                    <img src="img/logo.svg" alt="Логотип Бюро БВ">
-                </div>
-                <div class="preloader-separator"></div>
-                <div class="preloader-tagline">
-                    <span>Изделия</span>
-                    <span>Индивидуального</span>
-                    <span>Изготовления</span>
-                </div>
+<!-- ВСТАВЬТЕ ЭТОТ НОВЫЙ БЛОК ВМЕСТО СТАРОГО ПРЕЛОАДЕРА -->
+<div class="preloader">
+    <!-- Эта обертка будет ограничивать контент пропорциями 16:9 на сверхшироких экранах -->
+    <div class="preloader-content-wrapper">
+
+        <!-- Контейнер для текста, который будет сверху на мобильных -->
+        <div class="preloader-services-top">
+            <span>Нержавеющая сталь</span>
+            <span>Корпусная мебель</span>
+            <span>Столярные изделия</span>
+        </div>
+
+        <!-- Контейнер для центральной анимации (лого и слоган) -->
+        <div class="preloader-central-content">
+            <div class="preloader-logo-row">
+                <img src="img/logo.svg" alt="Логотип Бюро БВ">
+            </div>
+            <div class="preloader-separator"></div>
+            <div class="preloader-tagline">
+                <span>Изделия</span>
+                <span>Индивидуального</span>
+                <span>Изготовления</span>
             </div>
         </div>
-        <div class="progress-bar-container">
-            <div class="progress-bar-fill"></div>
-        </div>
-    </div>
 
-<header class="site-header">
-    <div class="container">
-        <a href="../index.html" class="logo">
-            <picture>
-                <source media="(max-width: 768px)" srcset="../img/logo_portable.svg">
-                <img src="../img/logo.svg" alt="Логотип">
-            </picture>
-        </a>
-        <div class="burger-menu">
-            <span class="burger-line"></span>
-            <span class="burger-line"></span>
+        <!-- Контейнер для текста, который будет снизу -->
+        <div class="preloader-services-bottom">
+            <span>Латунь</span>
+            <span>Искусственный и натуральный камень</span>
+            <span>Стекло и зеркала</span>
         </div>
-    </div>
 
-    <div class="social-links">
-        <a href="https://wa.me/79165794892?text=Здравствуйте" target="_blank" aria-label="WhatsApp">
-            <img src="../img/wa.png" alt="WhatsApp">
-        </a>
-        <a href="https://t.me/alexeybasov" target="_blank" aria-label="Telegram">
-            <img src="../img/tg.png" alt="Telegram">
-        </a>
     </div>
+</div>
+
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="logo"> <!-- Убедитесь, что путь к index.html правильный для каждой страницы -->
+                <picture>
+                    <source media="(max-width: 768px)" srcset="img/logo_portable.svg"> <!-- и здесь -->
+                    <img src="img/logo.svg" alt="Логотип"> <!-- и здесь -->
+                </picture>
+            </a>
+            <div class="burger-menu">
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+            </div>
+        </div>
+    
+        <div class="social-links">
+            <a href="https://wa.me/79165794892?text=Здравствуйте" target="_blank" aria-label="WhatsApp">
+                <img src="img/wa.png" alt="WhatsApp"> <!-- и здесь -->
+            </a>
+            <a href="https://t.me/alexeybasov" target="_blank" aria-label="Telegram">
+                <img src="img/tg.png" alt="Telegram"> <!-- и здесь -->
+            </a>
+            <!-- ВОТ НОВАЯ КНОПКА -->
+            <a href="#" id="email-copy-btn" aria-label="Скопировать email">
+                <img src="img/email.svg" alt="Email"> <!-- и здесь -->
+            </a>
+        </div>
     </header>
 
 <div class="slider-nav"></div>
@@ -85,7 +105,7 @@
         </nav>
         <div class="menu-contact-email">
             <a href="tel:+79165794892">+7 (916) 579-48-92</a>
-        <a href="mailto:a.basov@bureaubv.ru">a.basov@bureaubv.ru</a>
+        <a hre="a.basov@bureaubv.ru">a.basov@bureaubv.ru</a>
     </div>
 </div>
     </div>
@@ -94,47 +114,34 @@
 <div id="fullpage-container">
     <section class="section">
         <div class="hero-content">
-            <h1>Индивидуальные изделия</h1>
-            <div class="hero-buttons">
-                <a href="html/corp-furniture.html" class="cta-button">К проектам +</a>
-                <a href="html/contact.html" class="cta-button">Контакты +</a>
-            </div>
+            <h1>Изделия индивидуального изготовления</h1>
         </div>
         <video src="vid/main1.mp4" autoplay loop muted playsinline></video>
     </section>
     <section class="section">
         <div class="hero-content">
             <h1>От идеи до воплощения</h1>
-            <div class="hero-buttons">
-                <a href="html/corp-furniture.html" class="cta-button">К проектам +</a>
-                <a href="html/contact.html" class="cta-button">Контакты +</a>
-            </div>
         </div>
         <video src="vid/main2.mp4" autoplay loop muted playsinline></video>
     </section>
     <section class="section">
         <div class="hero-content">
             <h1>Экспертиза в материалах</h1>
-            <div class="hero-buttons">
-                <a href="html/corp-furniture.html" class="cta-button">К проектам +</a>
-                <a href="html/contact.html" class="cta-button">Контакты +</a>
-            </div>
         </div>
         <video src="vid/main3.mp4" autoplay loop muted playsinline></video>
     </section>
     <section class="section">
         <div class="hero-content">
             <h1>Авторский надзор</h1>
-            <div class="hero-buttons">
-                <a href="html/corp-furniture.html" class="cta-button">К проектам +</a>
-                <a href="html/contact.html" class="cta-button">Контакты +</a>
-            </div>
         </div>
         <video src="vid/main4.mp4" autoplay loop muted playsinline></video>
     </section>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
 <script src="js/main.js"></script>
-
+    <div id="copy-notification">
+        <p>Готово! Почта скопирована в буфер обмена.</p>
+        <p>Так же вы можете прочитать имя почты, нажав на меню.</p>
+    </div>
 </body>
 </html>
