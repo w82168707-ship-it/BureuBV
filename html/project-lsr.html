@@ -75,7 +75,7 @@
 
     <main>
         <div class="project-page-slider">
-            <!-- Первый полноэкранный слайд: ВИДЕО -->
+            <!-- Первый полноэкранный слайд: ВИДЕО (контент ЛСР) -->
             <section class="project-slide">
                 <div class="horizontal-slider">
                     <div class="slides-container-h">
@@ -88,7 +88,7 @@
                     <div class="slider-nav-h"></div>
                 </div>
             </section>
-            <!-- Второй полноэкранный слайд: КОНТЕНТ -->
+            <!-- Второй полноэкранный слайд: КОНТЕНТ (контент ЛСР в структуре Флави) -->
             <section class="project-slide">
                 <div class="content-wrapper">
                     <div class="project-content">
@@ -96,12 +96,35 @@
                             <h2>О проекте «Музей ЛСР»</h2>
                             <p>Разработка и реализация уникальных экспозиционных решений для корпоративного музея. Проект включал в себя сложные конструкции из металла, стекла и камня, требующие высокой точности проектирования и исполнения.</p>
                         </div>
-                        <div class="project-gallery-grid">
-                            <img src="../img/gallery_lsr1.png" alt="Экспозиция музея ЛСР 1">
-                            <img src="../img/gallery_lsr2.png" alt="Экспозиция музея ЛСР 2">
-                            <img src="../img/gallery_lsr3.png" alt="Экспозиция музея ЛСР 3">
-                            <img src="../img/gallery_lsr4.png" alt="Экспозиция музея ЛСР 4">
+                        
+                        <!-- ======================================================= -->
+                        <!-- НОВАЯ СТРУКТУРА ГАЛЕРЕИ С КОНТЕНТОМ ЛСР -->
+                        <!-- ======================================================= -->
+                        <div class="gallery-slider">
+                            <div class="gallery-slider-wrapper">
+                                <div class="gallery-slider-track">
+                                    <div class="gallery-slide">
+                                        <img src="../img/gallery_lsr1.png" alt="Экспозиция музея ЛСР 1" class="gallery-slide-image">
+                                    </div>
+                                    <div class="gallery-slide">
+                                        <img src="../img/gallery_lsr2.png" alt="Экспозиция музея ЛСР 2" class="gallery-slide-image">
+                                    </div>
+                                    <div class="gallery-slide">
+                                        <img src="../img/gallery_lsr3.png" alt="Экспозиция музея ЛСР 3" class="gallery-slide-image">
+                                    </div>
+                                    <div class="gallery-slide">
+                                        <img src="../img/gallery_lsr4.png" alt="Экспозиция музея ЛСР 4" class="gallery-slide-image">
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="slider-arrow-gallery prev" aria-label="Предыдущий слайд">&lt;</button>
+                            <button class="slider-arrow-gallery next" aria-label="Следующий слайд">&gt;</button>
+                            <div class="gallery-slider-nav"></div>
                         </div>
+                        <!-- ======================================================= -->
+                        <!-- КОНЕЦ НОВОГО БЛОКА -->
+                        <!-- ======================================================= -->
+
                     </div>
                 </div>
             </section>
@@ -110,6 +133,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <!-- ДОБАВЛЕН СКРИПТ FLIP ДЛЯ АНИМАЦИИ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/Flip.min.js"></script>
     <script src="../js/lenis.min.js"></script>
     <script src="../js/project-flavi.js"></script>
 

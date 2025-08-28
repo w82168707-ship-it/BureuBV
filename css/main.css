@@ -128,7 +128,7 @@ body.menu-is-open .menu-panel { transform: translateX(0); }
     object-fit: cover;
 }
 /* --- СТИЛИ NAV DOTS --- */
-.slider-nav { position: fixed; top: 52%; right: 25px; transform: translateY(-50%); z-index: 50; display: flex; flex-direction: column; gap: 15px; align-items: center; }
+.slider-nav { position: fixed; top: 52%; right: 50px; transform: translateY(-50%); z-index: 50; display: flex; flex-direction: column; gap: 15px; align-items: center; }
 .dot { width: 5px; height: 12px; background-color: rgba(0, 0, 0, 0); border-radius: 5px; cursor: pointer; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); box-shadow: 0 0 0 1px rgb(255, 255, 255); }
 .dot:hover { background-color: rgba(255, 255, 255, 0.8); }
 .dot.active { height: 35px; background-color: #ffffff; }
@@ -682,4 +682,30 @@ body.is-loading > .slider-nav {
     .menu-panel {
         padding-top: 50px; /* Было 150px, уменьшаем на 50px */
     }
+}
+
+@media (min-width: 1701px) {
+    .social-links {
+        /*
+         * Используем calc() для вычисления точного положения:
+         * 1. (100vw - 1700px) / 2  -> вычисляет размер левого авто-отступа (margin)
+         * 2. 85px                     -> это 5% от 1700px (внутренний отступ padding)
+         */
+        left: calc((100vw - 1700px) / 2 + 85px);
+    }
+}
+
+.social-links a {
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: scale(1.1);
+}
+
+.social-links img {
+    width: 24px;
+    height: auto;
+    display: block;
 }

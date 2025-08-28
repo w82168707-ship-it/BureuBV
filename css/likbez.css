@@ -23,12 +23,13 @@ html::-webkit-scrollbar { display: none; }
 
 /* Лента постов */
 .likbez-feed {
-    max-width: 1400px; /* Делаем контейнер шире */
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 50px 100px 50px;
-    display: grid; /* Включаем грид-сетку */
-    grid-template-columns: 1fr 1fr; /* Две равные колонки */
-    gap: 40px; /* Расстояние между колонками и строками */
+    display: grid;
+    /* ИЗМЕНЕНИЕ: Устанавливаем три равные колонки */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 40px;
 }
 .likbez-post {
     display: block;

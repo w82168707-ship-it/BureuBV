@@ -7,6 +7,35 @@ window.scrollTo(0, 0);
 // Регистрируем плагины GSAP один раз в самом начале
 gsap.registerPlugin(ScrollTrigger);
 
+// --- НОВАЯ ФУНКЦИЯ: Устанавливает рандомный фон для страницы проекта ---
+function initFlaviProjectBackground() {
+    // Находим именно тот элемент, который служит фоном для контентной части
+    const backgroundElement = document.querySelector('.project-slide .content-wrapper');
+    if (!backgroundElement) return;
+
+    const pathPrefix = '../img/';
+    const imageFiles = [
+        'gallery_flavi1.png', 
+        'gallery_flavi2.png', 
+        'gallery_lsr1.png', 
+        'gallery_lsr2.png', 
+        'gallery_lsr3.png', 
+        'gallery_flavi3.png', 
+        'gallery_flavi5.png', 
+        'gallery_lsr4.png'
+    ];
+    const images = imageFiles.map(file => pathPrefix + file);
+    const randomImage = images[Math.floor(Math.random() * images.length)];
+
+    // Устанавливаем фон с помощью GSAP
+    gsap.set(backgroundElement, {
+        backgroundImage: `url(${randomImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+    });
+}
+
+
 // --- Анимации для разных страниц ---
 function initSinglePostAnimations() {
     const postElements = document.querySelectorAll('.post-header-full, .featured-media, .post-body');
@@ -234,6 +263,248 @@ function initEmailCopy() {
         });
     }
 }
+/**
+ * Создает навигационные точки для слайдера.
+ * @param {HTMLElement | null} container - DOM-элемент, куда будут добавлены точки.
+ * @param {number} numDots - Количество точек, которое нужно создать.
+ * @param {function(number): void} onDotClickCallback - Функция, которая вызывается при клике на точку.
+ * @returns {function(number): void} - Возвращает функцию для обновления активной точки.
+ */
+function createSliderDots(container, numDots, onDotClickCallback) {
+    // ---- ИСПРАВЛЕНИЕ: ----
+    // 1. Проверяем, существует ли контейнер. Если нет - выходим.
+    if (!container) {
+        // 2. Возвращаем "пустую" функцию, чтобы код, который ее вызовет, не сломался.
+        return () => {};
+    }
+
+    container.innerHTML = ''; // Теперь эта строка безопасна
+    const dots = [];
+
+    for (let i = 0; i < numDots; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('gallery-dot');
+        dot.addEventListener('click', () => onDotClickCallback(i));
+        container.appendChild(dot);
+        dots.push(dot);
+    }
+
+    // Возвращаем функцию, которая будет обновлять активное состояние
+    return function updateActiveDot(activeIndex) {
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === activeIndex);
+        });
+    };
+}
+
+function initializeInteractiveGallery() {
+    const gallerySlider = document.querySelector('.gallery-slider');
+    if (!gallerySlider) return;
+
+    const track = gallerySlider.querySelector('.gallery-slider-track');
+    const slides = Array.from(gallerySlider.querySelectorAll('.gallery-slide'));
+    const prevButton = gallerySlider.querySelector('.slider-arrow-gallery.prev');
+    const nextButton = gallerySlider.querySelector('.slider-arrow-gallery.next');
+    const navContainer = gallerySlider.querySelector('.gallery-slider-nav');
+
+    const isMobile = window.innerWidth <= 768;
+    const slidesToShow = isMobile ? 1 : 4;
+
+    const totalSlides = slides.length;
+
+    // --- ЛОГИКА СЛАЙДЕРА (остается без изменений) ---
+    if (totalSlides > slidesToShow) {
+        let currentIndex = 0;
+        let isAnimatingSlider = false;
+        
+        const step = isMobile 
+            ? slides[0].offsetWidth + parseInt(getComputedStyle(slides[0]).marginRight)
+            : slides[1].offsetLeft - slides[0].offsetLeft;
+
+        const numDots = totalSlides - slidesToShow + 1;
+
+        const updateDots = createSliderDots(navContainer, numDots, (dotIndex) => {
+            if (isAnimatingSlider || currentIndex === dotIndex) return;
+            goToSlide(dotIndex);
+        });
+        
+        const updateSliderState = () => {
+            prevButton.disabled = currentIndex === 0;
+            nextButton.disabled = currentIndex >= totalSlides - slidesToShow;
+            updateDots(currentIndex);
+        };
+
+        const goToSlide = (index) => {
+            isAnimatingSlider = true;
+            currentIndex = index;
+            gsap.to(track, {
+                x: -currentIndex * step,
+                duration: 0.6,
+                ease: 'power2.inOut',
+                onComplete: () => {
+                    updateSliderState();
+                    isAnimatingSlider = false;
+                }
+            });
+        };
+
+        nextButton.addEventListener('click', () => {
+            if (isAnimatingSlider || currentIndex >= totalSlides - slidesToShow) return;
+            goToSlide(currentIndex + 1);
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (isAnimatingSlider || currentIndex === 0) return;
+            goToSlide(currentIndex - 1);
+        });
+        
+        if (isMobile) {
+            let touchStartX = 0;
+            let touchEndX = 0;
+            const swipeThreshold = 50;
+
+            track.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+            track.addEventListener('touchmove', (e) => { touchEndX = e.touches[0].clientX; }, { passive: true });
+            track.addEventListener('touchend', () => {
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) { nextButton.click(); } else { prevButton.click(); }
+                }
+            });
+        }
+        
+        updateSliderState();
+
+    } else {
+        prevButton.style.display = 'none';
+        nextButton.style.display = 'none';
+        if (navContainer) navContainer.style.display = 'none';
+    }
+
+    // --- ЛОГИКА АНИМАЦИИ FLIP (ИЗМЕНЕНИЯ ВНУТРИ expandImage) ---
+    let activeImage = null;
+    let isAnimatingFlip = false;
+    gsap.delayedCall(0.1, () => Flip.getState(slides));
+
+    track.addEventListener('click', (event) => {
+        let clickedSlide = event.target.closest('.gallery-slide');
+        if (clickedSlide && !isAnimatingFlip && !activeImage && !isMobile) {
+            expandImage(clickedSlide);
+        }
+    });
+
+    function expandImage(image) {
+    isAnimatingFlip = true;
+    activeImage = image;
+    const container = image.closest('.project-content'); // Наша "подложка"
+    const description = container.querySelector('.project-description'); // Блок с текстом
+    const track = gallerySlider.querySelector('.gallery-slider-track'); // Нужен для поиска wrapper'а
+
+    const imageClone = image.cloneNode(true);
+    imageClone.classList.add('expanded-image-clone');
+    container.appendChild(imageClone);
+
+    gsap.to(gallerySlider, { autoAlpha: 0, duration: 0.4 });
+    const state = Flip.getState(image);
+    image.classList.add('is-hidden-original');
+
+    // ========================================================================
+    // --- НАЧАЛО ИЗМЕНЕНИЙ: НОВЫЙ БЛОК ВЫЧИСЛЕНИЙ ---
+    // ========================================================================
+
+    // 1. Находим родительский контейнер галереи для расчета базовой ширины.
+    const sliderWrapper = track.closest('.gallery-slider-wrapper');
+    const baseWidth = sliderWrapper.offsetWidth;
+
+    // 2. Уменьшаем эту ширину в 1.3 раза для конечного размера.
+    const finalWidth = baseWidth / 1.1;
+
+    // 3. Высоту считаем по пропорции 16:9 от новой, уменьшенной ширины.
+    const finalHeight = finalWidth / (16 / 9);
+
+    // 4. Горизонтально центрируем уменьшенную картинку внутри "подложки".
+    //    (Ширина подложки - Ширина картинки) / 2
+    const finalLeft = (container.clientWidth - finalWidth) / 2;
+
+    // 5. Вертикальную позицию рассчитываем как и раньше (под текстом и на 500px выше).
+    const finalTop = (description.offsetTop + description.offsetHeight + 60) - 325;
+
+    // ========================================================================
+    // --- КОНЕЦ ИЗМЕНЕНИЙ ---
+    // ========================================================================
+    
+    // Используем GSAP для установки финальных значений ПЕРЕД анимацией.
+    gsap.set(imageClone, {
+        position: 'absolute',
+        width: finalWidth,
+        height: finalHeight,
+        top: finalTop,
+        left: finalLeft
+    });
+    
+    gsap.delayedCall(0, () => {
+        Flip.from(state, {
+            targets: imageClone,
+            duration: 0.7,
+            ease: 'power3.inOut',
+            onComplete: () => {
+                isAnimatingFlip = false;
+                imageClone.addEventListener('click', () => collapseImage(), { once: true });
+            }
+        });
+    });
+}
+
+    function collapseImage() {
+        if (isAnimatingFlip || !activeImage) return;
+        isAnimatingFlip = true;
+        const imageClone = document.querySelector('.expanded-image-clone');
+        if (!imageClone) { isAnimatingFlip = false; return; }
+
+        gsap.to(gallerySlider, { autoAlpha: 1, duration: 0.4, delay: 0.3 });
+        const state = Flip.getState(activeImage);
+        Flip.to(state, {
+            targets: imageClone,
+            duration: 0.7,
+            ease: 'power3.inOut',
+            onComplete: () => {
+                imageClone.remove();
+                activeImage.classList.remove('is-hidden-original');
+                activeImage = null;
+                isAnimatingFlip = false;
+            }
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // ИЗМЕНЕНИЕ: Мы ищем не контейнер, а конкретно картинку внутри него.
+    const logoImage = document.querySelector('.logo img'); 
+    const socialLinks = document.querySelector('.social-links');
+
+    // Проверка, что оба элемента найдены
+    if (!logoImage || !socialLinks) {
+        console.error("Не удалось найти логотип или блок социальных ссылок.");
+        return;
+    }
+
+    // Функция для выравнивания
+    function alignSocialLinks() {
+        // Получаем актуальные координаты самого ИЗОБРАЖЕНИЯ
+        const logoImageRect = logoImage.getBoundingClientRect();
+        
+        // Применяем отступ картинки к блоку соцсетей
+        socialLinks.style.left = `${logoImageRect.left}px`;
+    }
+
+    // Вызываем функцию один раз при загрузке
+    alignSocialLinks();
+
+    // И вызываем ее каждый раз при изменении размера окна
+    window.addEventListener('resize', alignSocialLinks);
+
+});
 
 // --- 2. ГЛАВНЫЙ ЗАПУСК ВСЕГО ПОСЛЕ ЗАГРУЗКИ СТРАНИЦЫ ---
 window.addEventListener('load', () => {
@@ -246,6 +517,8 @@ window.addEventListener('load', () => {
         initAllMenusForSlider();
         initHorizontalSlider();
         initEmailCopy();
+        initializeInteractiveGallery();
+        initFlaviProjectBackground(); // <--- ВЫЗЫВАЕМ ФУНКЦИЮ ФОНА
     } else {
         // --- РЕЖИМ МОБИЛЬНОГО или любая другая страница: запускаем обычный скролл ---
         lenisInstance = initLenis();
@@ -253,9 +526,9 @@ window.addEventListener('load', () => {
         initCustomScrollbar(lenisInstance);
         initEmailCopy();
         // Запускаем остальные анимации
-        initGridAnimation();
+        // initGridAnimation();
         initAboutPageAnimations();
-        initRandomBackground();
+        initRandomBackground(); // Старую функцию больше не вызываем здесь
         initSingleProjectAnimations();
         initContactPageAnimations();
         initLikbezPageAnimations();
@@ -264,6 +537,8 @@ window.addEventListener('load', () => {
         // Если это мобильная версия страницы проекта, запускаем нужные функции
         if (isProjectPage && isMobile) {
             initHorizontalSlider();
+            initializeInteractiveGallery();
+            initFlaviProjectBackground(); // <--- И ЗДЕСЬ ТОЖЕ ВЫЗЫВАЕМ
         }
     }
     // Обработчик нажатия клавиши Escape

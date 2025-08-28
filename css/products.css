@@ -39,7 +39,8 @@ body {
     text-align: center;
     font-size: 3rem;
     font-weight: 800;
-    padding: 150px 0 80px 0; /* Большой отступ сверху, поменьше снизу */
+    /* ИЗМЕНЕНИЕ: Устанавливаем отступы как в адаптивной версии "Ликбеза" */
+    padding: 60px 0 60px 0;
 }
 
 .products-grid {
